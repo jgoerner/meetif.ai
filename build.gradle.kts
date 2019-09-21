@@ -38,6 +38,10 @@ dependencies {
     
     // HTTP communication
     implementation("com.github.jkcclemens:khttp:-SNAPSHOT")
+
+    // RML Engines
+    implementation("com.taxonic.carml:carml-engine:0.2.3")
+    implementation("com.taxonic.carml:carml-logical-source-resolver-jsonpath:0.2.3")
 }
 
 tasks.withType<KotlinCompile> {

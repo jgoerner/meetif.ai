@@ -14,3 +14,10 @@ class TripleStoreProperties{
     var persist: Boolean = true
     lateinit var delay: Number
 }
+
+@Component
+@ConfigurationProperties("rml")
+class RMLProperties{
+    lateinit var dataDir: String
+    lateinit var mappingDir: String
+}

@@ -39,3 +39,4 @@ gradle-app.setting
 ### OTHER ###
 .DS_Store
 .idea
+sample-data/
