@@ -57,6 +57,11 @@ class TripleStoreService {
         }
     }
 
+    fun createNamespace(prefix: String, ns: String) {
+        // TODO Implement functionality
+        logger.info("Creating namespace '$prefix' -> <$ns>")
+    }
+
     fun liftPeople() {
 
         // collect mapping file from RMLProperties
