@@ -1,0 +1,37 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>.
+@prefix rml: <http://semweb.mmlab.be/ns/rml#>.
+@prefix ql: <http://semweb.mmlab.be/ns/ql#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix mtfai: <http://meetif.ai/>.
+
+<#GroupMapping>
+  rml:logicalSource [
+    rml:source "groups.json";
+    rml:referenceFormulation ql:JSONPath;
+    rml:iterator "$" ];
+
+  rr:subjectMap [
+     rr:template "http://meetif.ai/{id}";
+     rr:class foaf:Group
+  ];
+
+  rr:predicateObjectMap [
+    rr:predicate rdfs:label;
+    rr:objectMap [rml:reference "name"]
+  ];
+
+  rr:predicateObjectMap [
+    rr:predicate foaf:based_near;
+    rr:objectMap [ rr:parentTriplesMap <#GroupCityMapping> ]
+  ].
+
+<#GroupCityMapping>
+  rml:logicalSource [
+    rml:source "groups.json";
+    rml:referenceFormulation ql:JSONPath;
+    rml:iterator "$" ];
+
+  rr:subjectMap [
+     rr:template "http://dbpedia.org/resource/{city}";
+  ].

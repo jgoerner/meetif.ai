@@ -27,11 +27,21 @@
   ];
 
   rr:predicateObjectMap [
+    rr:predicate foaf:page;
+    rr:objectMap [rml:reference "group_profile.link"]
+  ];
+
+  rr:predicateObjectMap [
     rr:predicate foaf:based_near;
-    rr:objectMap [ rr:parentTriplesMap <#CityMapping> ]
+    rr:objectMap [ rr:parentTriplesMap <#PersonCityMapping> ]
+  ];
+
+  rr:predicateObjectMap [
+    rr:predicate foaf:member;
+    rr:objectMap [ rr:parentTriplesMap <#PersonGroupMapping> ]
   ].
 
-<#CityMapping>
+<#PersonCityMapping>
   rml:logicalSource [
     rml:source "members.json";
     rml:referenceFormulation ql:JSONPath;
@@ -39,4 +49,14 @@
 
   rr:subjectMap [
      rr:template "http://dbpedia.org/resource/{city}";
+  ].
+
+<#PersonGroupMapping>
+  rml:logicalSource [
+    rml:source "members.json";
+    rml:referenceFormulation ql:JSONPath;
+    rml:iterator "$.[*]" ];
+
+  rr:subjectMap [
+     rr:template "http://meetif.ai/{group_profile.group.id}";
   ].
