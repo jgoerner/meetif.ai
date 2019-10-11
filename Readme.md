@@ -1,0 +1,6 @@
+# Knowledge Graph Demonstrator Project 🧠🕸
+> more information soon...
+
+## How to start the app
+1. Start the docker container `docker-compose up -d`
+2. ...

@@ -3,6 +3,12 @@
  */
 package meetifai
 
-fun main() {
-    println("wubba lubba dub dub")
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
+
+@SpringBootApplication
+class MeetifaiApplication
+
+fun main(args: Array<String>) {
+    runApplication<MeetifaiApplication>(*args)
 }

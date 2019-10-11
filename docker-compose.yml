@@ -1,0 +1,8 @@
+# TODO map directory to docker volume and persist
+
+version: "3"
+services:
+  rdf4j:
+    image: eclipse/rdf4j-workbench:amd64-latest
+    ports:
+      - 8080:8080
