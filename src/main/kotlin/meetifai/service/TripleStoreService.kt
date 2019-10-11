@@ -57,12 +57,11 @@ class TripleStoreService {
         }
     }
 
-    fun createNamespace(prefix: String, ns: String) {
+    fun createNamespace(name: String, prefix: String, ns: String) {
         // TODO Implement functionality
-        logger.info("Creating namespace '$prefix' -> <$ns>")
     }
 
-    fun liftPeople() {
+    fun liftData() {
 
         // collect mapping file from RMLProperties
         val mappingFiles = File(rmlP.mappingDir).listFiles()

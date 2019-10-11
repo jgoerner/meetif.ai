@@ -2,18 +2,18 @@
 @prefix rml: <http://semweb.mmlab.be/ns/rml#>.
 @prefix ql: <http://semweb.mmlab.be/ns/ql#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
-@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix schema: <http://schema.org/>.
 @prefix mtfai: <http://meetif.ai/>.
 
-<#GroupMapping>
+<#EventsMapping>
   rml:logicalSource [
-    rml:source "groups.json";
+    rml:source "events.json";
     rml:referenceFormulation ql:JSONPath;
-    rml:iterator "$" ];
+    rml:iterator "$.[*]" ];
 
   rr:subjectMap [
-     rr:template "http://meetif.ai/{id}";
-     rr:class foaf:Group
+     rr:template "http://meetif.ai/{id}" ;
+     rr:class schema:Event
   ];
 
   rr:predicateObjectMap [
@@ -22,16 +22,21 @@
   ];
 
   rr:predicateObjectMap [
-    rr:predicate foaf:based_near;
-    rr:objectMap [ rr:parentTriplesMap <#GroupCityMapping> ]
+    rr:predicate schema:url;
+    rr:objectMap [rml:reference "link"]
+  ];
+
+  rr:predicateObjectMap [
+    rr:predicate schema:organizer;
+    rr:objectMap [ rr:parentTriplesMap <#EventsGroupMapping> ]
   ].
 
-<#GroupCityMapping>
+<#EventsGroupMapping>
   rml:logicalSource [
-    rml:source "groups.json";
+    rml:source "events.json";
     rml:referenceFormulation ql:JSONPath;
-    rml:iterator "$" ];
+    rml:iterator "$.[*]" ];
 
   rr:subjectMap [
-     rr:template "http://dbpedia.org/resource/{city}";
+     rr:template "http://meetif.ai/{group.id}";
   ].

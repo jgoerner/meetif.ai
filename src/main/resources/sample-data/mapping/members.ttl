@@ -23,7 +23,7 @@
 
   rr:predicateObjectMap [
     rr:predicate foaf:thumbnail;
-    rr:objectMap [rml:reference "photo.photo_link"]
+    rr:objectMap [ rml:reference "photo.photo_link" ]
   ];
 
   rr:predicateObjectMap [
