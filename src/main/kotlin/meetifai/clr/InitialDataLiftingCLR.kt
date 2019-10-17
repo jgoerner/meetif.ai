@@ -14,7 +14,6 @@ class InitialDataLiftingCLR : CommandLineRunner {
     lateinit var tripleStoreService: TripleStoreService
 
     override fun run(vararg args: String?) {
-        println("Now I am doing some stuff")
         tripleStoreService.liftData()
         tripleStoreService.createNamespace("meetifay", "foaf", "http://xmlns.com/foaf/0.1/")
 

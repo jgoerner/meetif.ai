@@ -1,12 +1,9 @@
 import React from 'react';
 import './App.css';
+import Main from "./pages/Main/Main";
 
 const App: React.FC = () => {
-  return (
-    <div>
-      <p>Nothing here to see</p>
-    </div>
-  );
-}
+  return <Main />;
+};
 
 export default App;
