@@ -56,6 +56,23 @@ class TripleStoreService {
         }
     }
 
+    fun createDBPediaProxy() {
+        val endpoint = "http://${rdfP.host}:${rdfP.port}/rdf4j-workbench/repositories/NONE/create"
+        val payload = mapOf(
+                "type" to "sparql",
+                "Local repository ID" to "dbp",
+                "Repository title" to "DBPedia SPARQL proxy",
+                "SPARQL query endpoint" to "http://dbpedia.org/sparql",
+                "SPARQL update endpoint" to ""
+        )
+        when (post(endpoint, data=payload).statusCode) {
+            200 -> logger.info("Successfully created DBPedia SPARQL proxy")
+            500 -> logger.info("RDF4J Server Error while creating DBPedia SPARQL proxy")
+            else -> throw Exception("Something went wrong when trying to create the DBPedia SPARQL proxy")
+        }
+
+    }
+
     fun deleteRepository(name: String) {
         if(!repositoryExists(name)) return
         val endpoint = "http://${rdfP.host}:${rdfP.port}/rdf4j-workbench/repositories/$name/delete"
