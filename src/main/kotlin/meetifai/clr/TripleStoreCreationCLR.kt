@@ -19,5 +19,6 @@ class TripleStoreCreationCLR : CommandLineRunner {
 
     override fun run(vararg args: String?) {
         tripleStoreService.createRepository(p.name)
+        tripleStoreService.createDBPediaProxy()
     }
 }

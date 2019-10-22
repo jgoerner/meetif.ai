@@ -5,8 +5,10 @@ WHERE {
   ?p
     a foaf:Person ;
     foaf:name ?name ;
-	foaf:based_near ?location ;
+	foaf:based_near ?loc ;
 	foaf:thumbnail ?imgURL.
   BIND(42 as ?participatedEvents) .
   BIND(strafter(str(?p), "meetif.ai/") as ?id) .
+  BIND(strafter(str(?loc), "resource/") as ?location) .
+
 }
