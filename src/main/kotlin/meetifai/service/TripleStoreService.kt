@@ -9,6 +9,7 @@ import khttp.post
 import meetifai.misc.RMLProperties
 import meetifai.misc.TripleStoreProperties
 import org.eclipse.rdf4j.model.Model
+import org.eclipse.rdf4j.model.impl.TreeModel
 import org.eclipse.rdf4j.repository.http.HTTPRepository
 import org.eclipse.rdf4j.rio.RDFFormat
 import org.slf4j.Logger
@@ -25,6 +26,9 @@ class TripleStoreService {
 
     @Autowired
     lateinit var rmlP: RMLProperties
+
+    @Autowired
+    lateinit var labService: LabService
 
     val logger: Logger =  LoggerFactory.getLogger(TripleStoreService::class.java)
 
@@ -48,6 +52,15 @@ class TripleStoreService {
         }
     }
 
+    fun deleteRepository(name: String) {
+        if(!repositoryExists(name)) return
+        val endpoint = "http://${rdfP.host}:${rdfP.port}/rdf4j-workbench/repositories/$name/delete"
+        when (post(endpoint).statusCode) {
+            200 -> logger.info("Deleted repository $name")
+            else -> logger.info("Something else happened")
+        }
+    }
+
     fun repositoryExists(name: String) : Boolean {
         val endpoint = "http://${rdfP.host}:${rdfP.port}/rdf4j-server/repositories/$name/size"
         return when(get(endpoint).statusCode) {
@@ -61,34 +74,62 @@ class TripleStoreService {
         // TODO Implement functionality
     }
 
-    fun liftData() {
+    fun initialDataLift() {
+
+        // (0) crete an empty model to be filled w/ statically and dynamically mapped data
+        val model: Model = TreeModel()
+
+        // (I) Map JSON w/ static mapping file
+
+        // prepare a mapper
+        val staticMapper = RmlMapper
+                .newBuilder()
+                .setLogicalSourceResolver(Rdf.Ql.JsonPath, JsonPathResolver())
+                .fileResolver(File(rmlP.staticDataDir).toPath())
+                .build()
 
         // collect mapping file from RMLProperties
-        val mappingFiles = File(rmlP.mappingDir).listFiles()
+        val mappingFiles = File(rmlP.staticMappingDir).listFiles()
                 ?.filter { it.absolutePath.endsWith("ttl") }
                 ?.map { it.toPath() }
                 ?.toTypedArray()
                 ?: emptyArray()
 
         // prepare the mapping
-        val mapping = RmlMappingLoader
+        val staticMapping = RmlMappingLoader
                 .build()
                 .load(RDFFormat.TURTLE, *mappingFiles)
 
-        // prepare the mapper
-        val mapper = RmlMapper
+        // map em all
+        model.addAll(staticMapper.map(staticMapping))
+
+        // (2) Map JSON w/ dynamically created mappings
+
+        // prepare a mapper
+        val dynamicMapper = RmlMapper
                 .newBuilder()
                 .setLogicalSourceResolver(Rdf.Ql.JsonPath, JsonPathResolver())
-                .fileResolver(File(rmlP.dataDir).toPath())
+                .fileResolver(File(rmlP.dynamicDataDir).toPath())
                 .build()
 
-        val model = mapper.map(mapping)
+        val dynamicMappingLoader = RmlMappingLoader.build()
 
+        // dynamically create mapping files
+        File(rmlP.dynamicDataDir).listFiles()
+                ?.map{ it.nameWithoutExtension }
+                ?.forEach {
+                    val dynamicMapping = dynamicMappingLoader.load(labService.getLabMappingModel(it))
+                    model.addAll(dynamicMapper.map(dynamicMapping))
+                }
+        // final persistence
         persistModel(model)
-
     }
 
     fun persistModel(model: Model) {
-        HTTPRepository("http://${rdfP.host}:${rdfP.port}/rdf4j-server/repositories/${rdfP.name}").connection.use { it.add(model) }
+        repository.connection.use { it.add(model) }
     }
+
+    val repository
+        get() = HTTPRepository("http://${rdfP.host}:${rdfP.port}/rdf4j-server/repositories/${rdfP.name}")
+
 }

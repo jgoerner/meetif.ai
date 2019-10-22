@@ -1,0 +1,12 @@
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+SELECT ?id ?name ?location ?imgURL ?participatedEvents
+WHERE {
+  ?p
+    a foaf:Person ;
+    foaf:name ?name ;
+	foaf:based_near ?location ;
+	foaf:thumbnail ?imgURL.
+  BIND(42 as ?participatedEvents) .
+  BIND(strafter(str(?p), "meetif.ai/") as ?id) .
+}

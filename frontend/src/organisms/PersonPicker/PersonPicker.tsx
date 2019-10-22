@@ -12,6 +12,7 @@ const PersonPicker = (props: IPersonPicker) => {
 
     const handlePersonPick = () => {
         const p = Math.floor(Math.random()*props.persons.length);
+        console.log("math got " + p)
         //setPicked(p);
         props.handlePersonPicked(p);
     };

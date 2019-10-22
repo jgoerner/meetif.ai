@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./PersonDetail.module.css";
 
 export interface IPersonDetail {
+    id: number,
     name: string,
     location: string,
     participatedEvents: number

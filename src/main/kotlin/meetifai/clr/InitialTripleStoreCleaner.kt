@@ -1,25 +1,24 @@
 package meetifai.clr
 
-import meetifai.service.LabService
+import meetifai.misc.TripleStoreProperties
 import meetifai.service.TripleStoreService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 
+@Order(0)
 @Component
-@Order(2)
-class InitialDataLiftingCLR : CommandLineRunner {
+class InitialTripleStoreCleaner : CommandLineRunner {
 
     @Autowired
     lateinit var tripleStoreService: TripleStoreService
 
     @Autowired
-    lateinit var labService: LabService
+    lateinit var p: TripleStoreProperties
 
     override fun run(vararg args: String?) {
-        // to be deleted
-        labService.getLabMappingModel()
-        tripleStoreService.initialDataLift() }
+        tripleStoreService.deleteRepository(p.name)
+    }
 
 }

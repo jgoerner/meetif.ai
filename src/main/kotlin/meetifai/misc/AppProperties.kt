@@ -18,6 +18,13 @@ class TripleStoreProperties{
 @Component
 @ConfigurationProperties("rml")
 class RMLProperties{
-    lateinit var dataDir: String
-    lateinit var mappingDir: String
+    lateinit var staticDataDir: String
+    lateinit var staticMappingDir: String
+    lateinit var dynamicDataDir: String
+}
+
+@Component
+@ConfigurationProperties("sparql")
+class SparqlProperties{
+    lateinit var queryDir: String
 }
