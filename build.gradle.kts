@@ -33,6 +33,9 @@ dependencies {
     // spring boot config processor for config mgm
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
+    // dev libs
+    runtimeOnly("org.springframework.boot:spring-boot-devtools")
+
     // bundled dependency for RDF4J
     implementation("com.ontotext.graphdb:graphdb-free-runtime:8.11.0")
     

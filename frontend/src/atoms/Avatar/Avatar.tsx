@@ -1,11 +1,11 @@
 import React from 'react';
 
 export interface IAvatar {
-    url: string,
+    imgURL: string,
 }
 
 const Avatar = (props: IAvatar) => {
-    return <img src={props.url}/>
+    return <img src={props.imgURL}/>
 };
 
 export default Avatar

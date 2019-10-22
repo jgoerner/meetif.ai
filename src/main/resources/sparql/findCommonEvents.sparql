@@ -1,0 +1,10 @@
+PREFIX mtfai: <http://meetif.ai/>
+
+SELECT ?name
+WHERE {
+  BIND(mtfai:PERSON_1_ID as ?p1) .
+  BIND(mtfai:PERSON_2_ID as ?p2) .
+  ?p1 mtfai:participatedIn ?event .
+  ?p2 mtfai:participatedIn ?event .
+  ?event rdfs:label ?name .
+}
