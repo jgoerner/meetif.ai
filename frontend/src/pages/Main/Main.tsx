@@ -22,7 +22,15 @@ const Main = () => {
     });
 
     const handleSubmit = () => {
-        alert(`Doing crazy stuff with ${ Array.from(persons).map( ([_, v]) => JSON.stringify(v))}`)
+        // convert state ids to form data
+        const ids = Array.from(persons).map(([, person]) => person.id);
+        const form = new FormData();
+        form.append("p1", ids[0].toString());
+        form.append("p2", ids[1].toString() );
+
+        axios.post("http://localhost:9090/api/icebreaker/commonEvents", form)
+            .then(r => console.log("All good\n" + JSON.stringify(r["data"])))
+            .catch(e => console.log("Error: " + e))
     };
 
     const handleReset = () => {

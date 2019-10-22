@@ -7,6 +7,7 @@ import com.taxonic.carml.vocab.Rdf
 import khttp.get
 import khttp.post
 import meetifai.misc.RMLProperties
+import meetifai.misc.SparqlProperties
 import meetifai.misc.TripleStoreProperties
 import org.eclipse.rdf4j.model.Model
 import org.eclipse.rdf4j.model.impl.TreeModel
@@ -23,6 +24,9 @@ class TripleStoreService {
 
     @Autowired
     lateinit var rdfP: TripleStoreProperties
+
+    @Autowired
+    lateinit var sparqlProperties: SparqlProperties
 
     @Autowired
     lateinit var rmlP: RMLProperties
@@ -128,6 +132,8 @@ class TripleStoreService {
     fun persistModel(model: Model) {
         repository.connection.use { it.add(model) }
     }
+
+    fun loadQuery(name: String) = File("${sparqlProperties.queryDir}/$name.sparql").readText()
 
     val repository
         get() = HTTPRepository("http://${rdfP.host}:${rdfP.port}/rdf4j-server/repositories/${rdfP.name}")

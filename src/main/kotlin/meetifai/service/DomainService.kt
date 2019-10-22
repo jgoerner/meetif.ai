@@ -11,4 +11,5 @@ class PersonService {
     lateinit var personRepository: PersonRepository
 
     fun findAll() = personRepository.findAll()
+
 }
