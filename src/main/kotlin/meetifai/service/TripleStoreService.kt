@@ -62,8 +62,7 @@ class TripleStoreService {
                 "type" to "sparql",
                 "Local repository ID" to "dbp",
                 "Repository title" to "DBPedia SPARQL proxy",
-                "SPARQL query endpoint" to "http://dbpedia.org/sparql",
-                "SPARQL update endpoint" to ""
+                "SPARQL query endpoint" to "http://dbpedia.org/sparql"
         )
         when (post(endpoint, data=payload).statusCode) {
             200 -> logger.info("Successfully created DBPedia SPARQL proxy")
@@ -154,5 +153,8 @@ class TripleStoreService {
 
     val repository
         get() = HTTPRepository("http://${rdfP.host}:${rdfP.port}/rdf4j-server/repositories/${rdfP.name}")
+
+    val dbpediaRepository
+        get() = HTTPRepository("http://${rdfP.host}:${rdfP.port}/rdf4j-server/repositories/dbp")
 
 }
