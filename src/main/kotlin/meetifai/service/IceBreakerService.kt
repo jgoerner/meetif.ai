@@ -12,5 +12,5 @@ class IceBreakerService {
 
     fun findCommonEvents(p1: String, p2: String) = iceBreakerRepository.findCommonEvents(p1, p2)
 
-    fun countryMatch(city1: String, city2: String) = iceBreakerRepository.countryMatch(city1, city2)
+    fun differentCountry(city1: String, city2: String) = iceBreakerRepository.differentCountry(city1, city2)
 }

@@ -18,7 +18,7 @@ class IcebreakerController {
     fun findCommonEvents(@RequestParam p1: String, @RequestParam p2: String)
             = iceBreakerService.findCommonEvents(p1, p2)
 
-    @PostMapping("/icebreaker/countryMatch")
-    fun countryMatch(@RequestParam city1: String, @RequestParam city2: String)
-            = iceBreakerService.countryMatch(city1, city2)
+    @PostMapping("/icebreaker/differentCountry")
+    fun differentCountry(@RequestParam city1: String, @RequestParam city2: String)
+            = iceBreakerService.differentCountry(city1, city2)
 }

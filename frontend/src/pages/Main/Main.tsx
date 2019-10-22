@@ -24,13 +24,34 @@ const Main = () => {
     const handleSubmit = () => {
         // convert state ids to form data
         const ids = Array.from(persons).map(([, person]) => person.id);
-        const form = new FormData();
-        form.append("p1", ids[0].toString());
-        form.append("p2", ids[1].toString() );
+        const eventForm = new FormData();
+        eventForm.append("p1", ids[0].toString());
+        eventForm.append("p2", ids[1].toString() );
 
-        axios.post("http://localhost:9090/api/icebreaker/commonEvents", form)
-            .then(r => console.log("All good\n" + JSON.stringify(r["data"])))
-            .catch(e => console.log("Error: " + e))
+        axios.post("http://localhost:9090/api/icebreaker/commonEvents", eventForm)
+            .then(r => {
+                if (r["data"].length == 0) {
+                    console.log("No common events...");
+                    const countryForm = new FormData();
+                    const cities = Array.from(persons).map(([, person]) => person.location);
+                    countryForm.append("city1", cities[0]);
+                    countryForm.append("city2", cities[1]);
+                    axios.post("http://localhost:9090/api/icebreaker/differentCountry", countryForm)
+                        .then(r => {
+                            if (r["data"]) {
+                                console.log(`Talk about the differences between ${cities[0]} and ${cities[1]}` );
+                            } else {
+                                console.log("Coming from same country...");
+                                axios.get("http://numbersapi.com/random/")
+                                    .then(r => console.log(r["data"]))
+                            }
+                        })
+                        .catch(e => console.log("Error in second icebreaker - " + e))
+                } else {
+                    console.log("Start talking about events like " + JSON.stringify(r["data"]))
+                }
+            })
+            .catch(e => console.log("Error in first icebreaker - " + e))
     };
 
     const handleReset = () => {

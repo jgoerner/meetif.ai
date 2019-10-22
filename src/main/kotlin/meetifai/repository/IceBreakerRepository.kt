@@ -26,7 +26,7 @@ class IceBreakerRepository {
                 .map { bs -> Event(name = bs.getValue("name").stringValue() ?: "No Party") }
     }
 
-    fun countryMatch(city1: String, city2: String) : Boolean {
+    fun differentCountry(city1: String, city2: String) : Boolean {
         val query = tripleStoreService.loadQuery("matchingCountries")
                 .replace("CITY_1_NAME", city1)
                 .replace("CITY_2_NAME", city2)
@@ -36,7 +36,7 @@ class IceBreakerRepository {
             val result = con.prepareTupleQuery(query).evaluate()
             return if (result.hasNext()) {
                 result.next().let {
-                    it.getValue("country1").stringValue() == it.getValue("country2").stringValue()
+                    it.getValue("country1").stringValue() != it.getValue("country2").stringValue()
                 }
             } else {
                 false
