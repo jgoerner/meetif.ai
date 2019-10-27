@@ -1,3 +1,7 @@
+const AppTitle = "Meetif.ai";
+
+const AppDescription= "Ever wondered...";
+
 const DummyPersons = [
     {
         id: 0,
@@ -41,6 +45,8 @@ const DummyDescription = `
 
 
 export {
+    AppTitle,
+    AppDescription,
     DummyDescription,
     DummyPerson,
     DummyPersons
