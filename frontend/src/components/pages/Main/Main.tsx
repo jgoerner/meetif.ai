@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Styles from "./Main.module.css";
+import Styles from "./Main.module.scss";
 import PersonPicker from "../../organisms/PersonPicker/PersonPicker";
-import { DummyDescription, DummyPerson, DummyPersons } from "../../misc/Constants";
+import {AppTitle, DummyDescription, DummyPerson, DummyPersons} from "../../misc/Constants";
 import {IPersonCard} from "../../molecules/PersonCard/PersonCard";
 import axios from "axios";
+import Heading from "../../atoms/Heading/Heading";
 
 const Main = () => {
 
@@ -75,9 +76,8 @@ const Main = () => {
 
     let content = (
         <div className={Styles.Container}>
-            <div />
             <div className={Styles.Content}>
-                <h1>Here Comes the Heading</h1>
+                <Heading text={"Meetif.ai"} />
                 <p>{DummyDescription}</p>
                 <div className={Styles.PersonPicker}>
                     <PersonPicker
@@ -95,10 +95,38 @@ const Main = () => {
                 <button onClick={handleReset}>Reset</button>
                 <button onClick={handleRandomPick}>Random Pair</button>
             </div>
-            <div />
         </div>
     );
-    return content
+
+    let ctx = (
+        <div className={Styles.Container}>
+            <div className={Styles.Card}>
+                <div className={Styles.CardHeading}>
+                    <p>{AppTitle}</p>
+                </div>
+                <div className={Styles.CardContent}>
+                    <div className={Styles.PersonPicker}>
+                        <PersonPicker
+                            handlePersonPicked={(p: number) => handlePersonPick(p, 0)}
+                            persons={allPersons}
+                            picked={persons.get(0)}
+                        />
+                        <PersonPicker
+                            handlePersonPicked={(p: number) => handlePersonPick(p, 1)}
+                            persons={allPersons}
+                            picked={persons.get(1)}
+                        />
+                    </div>
+                    <div>
+                        <button onClick={handleSubmit}>Go</button>
+                        <button onClick={handleReset}>Reset</button>
+                        <button onClick={handleRandomPick}>Random Pair</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+    return ctx;
 };
 
 export default Main;

@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import Main from "./pages/Main/Main";
+import "./styling/fonts.scss";
+import Main from "./components/pages/Main/Main";
 
 const App: React.FC = () => {
   return <Main />;

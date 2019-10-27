@@ -1,7 +1,7 @@
 import React from 'react';
 import Avatar, { IAvatar } from "../../atoms/Avatar/Avatar";
 import PersonDetail, { IPersonDetail } from "../../atoms/PersonDetail/PersonDetail";
-import styles from "./PersonCard.module.css";
+import styles from "./PersonCard.module.scss";
 
 export type IPersonCard = IAvatar & IPersonDetail;
 
