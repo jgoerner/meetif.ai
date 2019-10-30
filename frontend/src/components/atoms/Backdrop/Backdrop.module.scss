@@ -1,0 +1,16 @@
+.Backdrop {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.Visible{
+  opacity: 1;
+  z-index: 100;
+}
+
+.Hidden {
+  opacity: 0;
+  z-index: -100;
+}

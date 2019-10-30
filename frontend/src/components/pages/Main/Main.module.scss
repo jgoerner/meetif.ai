@@ -7,6 +7,7 @@
   align-items: center;
   justify-content: center;
   background-color: $background-color-primary;
+  z-index: 100;
 }
 
 .Card {
@@ -79,4 +80,15 @@ button:focus {outline:0;}
 
 .Disabled {
   display: none;
+}
+
+.EmptyContent {
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Explanation {
+
 }

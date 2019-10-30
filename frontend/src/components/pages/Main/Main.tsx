@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Styles from "./Main.module.scss";
 import PersonPicker from "../../organisms/PersonPicker/PersonPicker";
-import {AppTitle, DummyDescription, DummyPerson, DummyPersons} from "../../misc/Constants";
+import {AppTitle, DummyPerson} from "../../misc/Constants";
 import {IPersonCard} from "../../molecules/PersonCard/PersonCard";
 import axios from "axios";
-import Heading from "../../atoms/Heading/Heading";
+import Button from "../../atoms/Button/Button";
+import Modal from "../../molecules/Modal/Modal";
 
 const Main = () => {
 
@@ -13,6 +14,8 @@ const Main = () => {
     const [untouched, setUntouched] = useState(true);
     const [allPersons, setAllPersons] = useState<IPersonCard[]>([]);
     const [empty, setEmpty] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState<Array<JSX.Element>>([]);
 
     useEffect(() => {
         if (untouched) {
@@ -24,16 +27,23 @@ const Main = () => {
     });
 
     const handleSubmit = () => {
+        // toggle modal
+        setShowModal(true);
+        let newModalText;
+
         // convert state ids to form data
         const ids = Array.from(persons).map(([, person]) => person.id);
         const eventForm = new FormData();
         eventForm.append("p1", ids[0].toString());
         eventForm.append("p2", ids[1].toString() );
-
         axios.post("http://localhost:9090/api/icebreaker/commonEvents", eventForm)
             .then(r => {
                 if (r["data"].length == 0) {
-                    console.log("No common events...");
+                    setModalContent(prevState => {
+                        const newContent = [...prevState];
+                        newContent.push(<p>No Common Events</p>);
+                        return newContent;
+                    });
                     const countryForm = new FormData();
                     const cities = Array.from(persons).map(([, person]) => person.location);
                     countryForm.append("city1", cities[0]);
@@ -41,16 +51,28 @@ const Main = () => {
                     axios.post("http://localhost:9090/api/icebreaker/differentCountry", countryForm)
                         .then(r => {
                             if (r["data"]) {
-                                console.log(`Talk about the differences between ${cities[0]} and ${cities[1]}` );
+                                setModalContent(prevState => {
+                                    const newContent = [...prevState];
+                                    newContent.push(<p>Talk about the differences between {cities[0]} and {cities[1]}</p>);
+                                    return newContent;
+                                });
                             } else {
-                                console.log("Coming from same country...");
+                                setModalContent(prevState => {
+                                    const newContent = [...prevState];
+                                    newContent.push(<p>Coming from same country...</p>);
+                                    return newContent;
+                                });
                                 axios.get("http://numbersapi.com/random/")
-                                    .then(r => console.log(r["data"]))
+                                    .then(r => setModalContent(prevState => {
+                                        const newContent = [...prevState];
+                                        newContent.push(<p>Did you know: {r["data"]}</p>);
+                                        return newContent;
+                                    }));
                             }
                         })
                         .catch(e => console.log("Error in second icebreaker - " + e))
                 } else {
-                    console.log("Start talking about events like " + JSON.stringify(r["data"]))
+                    setModalContent([<p>Start talking about events like </p>])
                 }
             })
             .catch(e => console.log("Error in first icebreaker - " + e))
@@ -77,67 +99,54 @@ const Main = () => {
         setEmpty(false);
     };
 
-    let content = (
-        <div className={Styles.Container}>
-            <div className={Styles.Content}>
-                <Heading text={"Meetif.ai"} />
-                <p>{DummyDescription}</p>
-                <div className={Styles.PersonPicker}>
-                    <PersonPicker
-                        handlePersonPicked={(p: number) => handlePersonPick(p, 0)}
-                        persons={allPersons}
-                        picked={persons.get(0)}
-                    />
-                    <PersonPicker
-                        handlePersonPicked={(p: number) => handlePersonPick(p, 1)}
-                        persons={allPersons}
-                        picked={persons.get(1)}
-                    />
-                </div>
-                <button onClick={handleSubmit}>Go</button>
-                <button onClick={handleReset}>Reset</button>
-                <button onClick={handleRandomPick}>Random Pair</button>
-            </div>
-        </div>
-    );
+    const toggleModal = () => {
+        setShowModal(!showModal);
+        setModalContent([]);
+    };
 
-    let ppClasses = [Styles.CardContent];
-    if(empty) {
-        ppClasses.push(Styles.Disabled);
+    let classesPersonPicker = [Styles.PersonPicker];
+    let classesCardContent = [Styles.CardContent];
+    let explainingText;
+    if (empty) {
+        classesPersonPicker.push(Styles.Disabled);
+        classesCardContent.push(Styles.EmptyContent);
+        explainingText = <div className={Styles.Explanation}>This is how you use ...</div>
     }
 
-    let pp = (
-        <div className={ppClasses.join(" ")}>
-            <div className={Styles.PersonPicker}>
-                <PersonPicker
-                    handlePersonPicked={(p: number) => handlePersonPick(p, 0)}
-                    persons={allPersons}
-                    picked={persons.get(0)}
-                />
-                <PersonPicker
-                    handlePersonPicked={(p: number) => handlePersonPick(p, 1)}
-                    persons={allPersons}
-                    picked={persons.get(1)}
-                />
-            </div>
-        </div>
-    );
-
-
     let ctx = (
-        <div className={Styles.Container}>
-            <div className={Styles.Card}>
-                <div className={Styles.CardHeading}>
-                    <p>{AppTitle}</p>
-                </div>
-                {pp}
-                <div className={Styles.ButtonBar}>
-                    <button onClick={handleSubmit}>Go</button>
-                    <button onClick={handleReset}>Reset</button>
-                    <button onClick={handleRandomPick}>Random Pair</button>
+        <React.Fragment>
+            <div className={Styles.Container}>
+                <Modal text={""} visible={showModal} clickHandler={toggleModal}>
+                    {modalContent}
+                </Modal>
+                <div className={Styles.Card}>
+                    <div className={Styles.CardHeading}>
+                        <p>{AppTitle}</p>
+                    </div>
+                    <div className={classesCardContent.join(" ")}>
+                        {explainingText}
+                        <div className={classesPersonPicker.join(" ")}>
+                            <PersonPicker
+                                handlePersonPicked={(p: number) => handlePersonPick(p, 0)}
+                                persons={allPersons}
+                                picked={persons.get(0)}
+                            />
+                            <PersonPicker
+                                handlePersonPicked={(p: number) => handlePersonPick(p, 1)}
+                                persons={allPersons}
+                                picked={persons.get(1)}
+                            />
+                        </div>
+                    </div>
+                    <div className={Styles.ButtonBar}>
+                        <Button text="Reset" action={handleReset} enabled/>
+                        <Button text="Random Pair" action={handleRandomPick} enabled/>
+                        <Button text="Icebreaker" action={handleSubmit} enabled={!empty}/>
+                    </div>
                 </div>
             </div>
-        </div>
+        </React.Fragment>
+
     );
     return ctx;
 };
