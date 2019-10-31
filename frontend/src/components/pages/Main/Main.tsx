@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import Styles from "./Main.module.scss";
 import PersonPicker from "../../organisms/PersonPicker/PersonPicker";
-import {AppTitle, DummyPerson} from "../../misc/Constants";
+import {
+    APP_TITLE,
+    COMMON_EVENTS,
+    DIFFERENT_COUNTRY,
+    DUMMY_PERSON,
+    NO_COMMON_EVENTS,
+    NO_DIFFERENT_COUNTRY
+} from "../../misc/Constants";
 import {IPersonCard} from "../../molecules/PersonCard/PersonCard";
 import axios from "axios";
 import Button from "../../atoms/Button/Button";
 import Modal from "../../molecules/Modal/Modal";
+import Infobar from "../../atoms/Infobar/Infobar";
+import Intention from "../../misc/Enums";
 
 const Main = () => {
 
-    const emptyPersons = new Map([[0, DummyPerson], [1, DummyPerson]]);
+    const emptyPersons = new Map([[0, DUMMY_PERSON], [1, DUMMY_PERSON]]);
     const [persons, setPersons] = useState<Map<number, IPersonCard>>(emptyPersons);
     const [untouched, setUntouched] = useState(true);
     const [allPersons, setAllPersons] = useState<IPersonCard[]>([]);
@@ -29,7 +38,6 @@ const Main = () => {
     const handleSubmit = () => {
         // toggle modal
         setShowModal(true);
-        let newModalText;
 
         // convert state ids to form data
         const ids = Array.from(persons).map(([, person]) => person.id);
@@ -41,7 +49,7 @@ const Main = () => {
                 if (r["data"].length == 0) {
                     setModalContent(prevState => {
                         const newContent = [...prevState];
-                        newContent.push(<p>No Common Events</p>);
+                        newContent.push(<Infobar intention={Intention.BAD}><p>{NO_COMMON_EVENTS}</p></Infobar>);
                         return newContent;
                     });
                     const countryForm = new FormData();
@@ -53,26 +61,36 @@ const Main = () => {
                             if (r["data"]) {
                                 setModalContent(prevState => {
                                     const newContent = [...prevState];
-                                    newContent.push(<p>Talk about the differences between {cities[0]} and {cities[1]}</p>);
+                                    newContent.push(
+                                        <Infobar intention={Intention.GOOD}>
+                                            <p>{DIFFERENT_COUNTRY}</p>
+                                            <p>Talk about the differences between <b>{cities[0]}</b> and <b>{cities[1]}</b></p>
+                                        </Infobar>);
                                     return newContent;
                                 });
                             } else {
                                 setModalContent(prevState => {
                                     const newContent = [...prevState];
-                                    newContent.push(<p>Coming from same country...</p>);
+                                    newContent.push(<Infobar intention={Intention.BAD}><p>{NO_DIFFERENT_COUNTRY}</p></Infobar>);
                                     return newContent;
                                 });
                                 axios.get("http://numbersapi.com/random/")
                                     .then(r => setModalContent(prevState => {
                                         const newContent = [...prevState];
-                                        newContent.push(<p>Did you know: {r["data"]}</p>);
+                                        newContent.push(<Infobar intention={Intention.GOOD}><p>Did you know:</p><p>{r["data"]}</p></Infobar>);
                                         return newContent;
                                     }));
                             }
                         })
                         .catch(e => console.log("Error in second icebreaker - " + e))
                 } else {
-                    setModalContent([<p>Start talking about events like </p>])
+                    console.log(r["data"]);
+                    const events = r["data"].map((d: any) => d.name);
+                    setModalContent([
+                        <Infobar intention={Intention.GOOD}>
+                            <p>{COMMON_EVENTS}</p><p>Start talking about events like {events.join(", ")}</p>
+                        </Infobar>
+                    ]);
                 }
             })
             .catch(e => console.log("Error in first icebreaker - " + e))
@@ -121,7 +139,7 @@ const Main = () => {
                 </Modal>
                 <div className={Styles.Card}>
                     <div className={Styles.CardHeading}>
-                        <p>{AppTitle}</p>
+                        <p>{APP_TITLE}</p>
                     </div>
                     <div className={classesCardContent.join(" ")}>
                         {explainingText}

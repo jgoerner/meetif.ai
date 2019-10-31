@@ -2,17 +2,12 @@
 
 .Modal {
   width: 50%;
-  height: 200px;
   z-index: 200;
   background-color: white;
   position: absolute;
   border-radius: $border-radius;
   transition: all 0.3s ease-out;
   padding: 10px;
-}
-
-.Modal > p {
-  background-color: $background-color-primary;
 }
 
 .Visible {
