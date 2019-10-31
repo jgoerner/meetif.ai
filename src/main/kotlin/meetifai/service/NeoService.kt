@@ -23,6 +23,8 @@ class NeoService {
 
     fun getShortestPath(fromName: String, toName: String) = neoRepository.getShortestPath(fromName, toName).map {mapPath(it["path"])}
 
+    fun getAllShortestPaths(fromName: String, toName: String) = neoRepository.getAllShortestPaths(fromName, toName).map {mapPath(it["path"])}
+
     fun mapPath(path: InternalPath?) : Map<Int, Any>{
         val result = mutableMapOf<Int, Any>()
         val p = path ?: return result

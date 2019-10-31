@@ -3,10 +3,10 @@ import Styles from "./Main.module.scss";
 import PersonPicker from "../../organisms/PersonPicker/PersonPicker";
 import {
     APP_TITLE,
-    COMMON_EVENTS,
+    COMMON_EVENTS, CONNECTION,
     DIFFERENT_COUNTRY,
     DUMMY_PERSON,
-    NO_COMMON_EVENTS,
+    NO_COMMON_EVENTS, NO_CONNECTION,
     NO_DIFFERENT_COUNTRY
 } from "../../misc/Constants";
 import {IPersonCard} from "../../molecules/PersonCard/PersonCard";
@@ -15,6 +15,8 @@ import Button from "../../atoms/Button/Button";
 import Modal from "../../molecules/Modal/Modal";
 import Infobar from "../../atoms/Infobar/Infobar";
 import Intention from "../../misc/Enums";
+import Avatar from "../../atoms/Avatar/Avatar";
+import logo from "../../../styling/logo.png";
 
 const Main = () => {
 
@@ -74,12 +76,58 @@ const Main = () => {
                                     newContent.push(<Infobar intention={Intention.BAD}><p>{NO_DIFFERENT_COUNTRY}</p></Infobar>);
                                     return newContent;
                                 });
-                                axios.get("http://numbersapi.com/random/")
-                                    .then(r => setModalContent(prevState => {
-                                        const newContent = [...prevState];
-                                        newContent.push(<Infobar intention={Intention.GOOD}><p>Did you know:</p><p>{r["data"]}</p></Infobar>);
-                                        return newContent;
-                                    }));
+                                const names = Array.from(persons).map(([, person]) => person.name);
+                                const connectionForm = new FormData();
+                                connectionForm.append("fromName", names[0].toString());
+                                connectionForm.append("toName", names[1].toString() );
+                                axios.post("http://localhost:9090/api/icebreaker/connection", connectionForm)
+                                    .then(r => {
+                                        if (r["data"].length != 0) {
+                                            setModalContent( prevState => {
+                                                const newContent = [...prevState];
+                                                const tmp = [<p>{CONNECTION}</p>];
+                                                Object.keys(r["data"]).map((key, idx) =>{
+                                                    if (idx % 2 == 0) {
+                                                        tmp.push(
+                                                            <div className={Styles.PersonInfoBar}>
+                                                                <Infobar intention={Intention.NEUTRAL}>
+                                                                    <div className={Styles.InfobarContainer}>
+                                                                        <Avatar mini imgURL={r["data"][key]["imgURL"]}/>
+                                                                        <p>{r["data"][key]["name"]}</p>
+                                                                    </div>
+                                                                </Infobar>
+                                                            </div>)
+                                                    } else {
+                                                        tmp.push(
+                                                            <div className={Styles.EventInfoBar}>
+                                                                <Infobar intention={Intention.NEUTRAL}>
+                                                                    <div className={Styles.InfobarContainer}>
+                                                                        <p>{r["data"][key]["name"]}</p>
+                                                                    </div>
+                                                                </Infobar>
+                                                            </div>)
+                                                    }
+                                                });
+                                                newContent.push(<Infobar intention={Intention.GOOD}>{tmp}</Infobar>);
+                                                return newContent;
+                                            });
+
+                                        } else {
+                                            setModalContent(prevState => {
+                                                const newContent = [...prevState];
+                                                newContent.push(<Infobar intention={Intention.BAD}><p>{NO_CONNECTION}</p></Infobar>);
+                                                return newContent;
+                                            });
+                                            axios.get("http://numbersapi.com/random/")
+                                                .then(r => setModalContent(prevState => {
+                                                    const newContent = [...prevState];
+                                                    newContent.push(<Infobar intention={Intention.GOOD}><p>Did you know:</p><p>{r["data"]}</p></Infobar>);
+                                                    return newContent;
+                                                }));
+                                        }
+                                    })
+                                    .catch(e => console.log(`Got the error ${e}`))
+
                             }
                         })
                         .catch(e => console.log("Error in second icebreaker - " + e))
@@ -117,7 +165,7 @@ const Main = () => {
         setEmpty(false);
     };
 
-    const toggleModal = () => {
+    const closeModal = () => {
         setShowModal(!showModal);
         setModalContent([]);
     };
@@ -134,7 +182,7 @@ const Main = () => {
     let ctx = (
         <React.Fragment>
             <div className={Styles.Container}>
-                <Modal text={""} visible={showModal} clickHandler={toggleModal}>
+                <Modal text={""} visible={showModal} clickHandler={closeModal}>
                     {modalContent}
                 </Modal>
                 <div className={Styles.Card}>

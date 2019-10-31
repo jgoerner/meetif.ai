@@ -10,10 +10,22 @@ interface IProps {
 const Infobar = (props: IProps) => {
     let styling = [Styles.Infobar];
 
-    if (props.intention == Intention.GOOD) {
-        styling.push(Styles.GoodIntention);
-    } else {
-        styling.push(Styles.BadIntention);
+    switch (props.intention) {
+        case Intention.GOOD:
+            styling.push(Styles.GoodIntention);
+            break;
+        case Intention.BAD:
+            styling.push(Styles.BadIntention);
+            break;
+        case Intention.NEUTRAL:
+            styling.push(Styles.NeutralIntention);
+            break;
+        case Intention.PERSON:
+            styling.push(Styles.PersonIntention);
+            break;
+        case Intention.EVENT:
+            styling.push(Styles.EventIntention);
+            break
     }
 
     return (

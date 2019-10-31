@@ -27,10 +27,15 @@ interface NeoRepository : Neo4jRepository<Any, Long> {
     fun importRDF()
 
     @Query("MATCH path=shortestPath((from {name:{nameFrom}})-[*]-(to {name:{nameTo}})) RETURN path")
-    //@Query("MATCH (from {name:{nameFrom}}) RETURN from")
     fun getShortestPath(
             @Param("nameFrom") nameFrom: String,
             @Param("nameTo") nameTo: String
             ) : List<Map<String, InternalPath>>
+
+    @Query("MATCH path=allShortestPaths((from {name:{nameFrom}})-[*]-(to {name:{nameTo}})) RETURN path")
+    fun getAllShortestPaths(
+            @Param("nameFrom") nameFrom: String,
+            @Param("nameTo") nameTo: String
+    ) : List<Map<String, InternalPath>>
 
 }

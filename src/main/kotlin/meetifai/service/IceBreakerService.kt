@@ -17,5 +17,5 @@ class IceBreakerService {
 
     fun differentCountry(city1: String, city2: String) = iceBreakerRepository.differentCountry(city1, city2)
 
-    fun connectingPath(fromName: String, toName: String) = neoService.getShortestPath(fromName, toName)
+    fun connection(fromName: String, toName: String) = neoService.getAllShortestPaths(fromName, toName).shuffled().firstOrNull()
 }

@@ -9,7 +9,7 @@ export type IPersonCard = IAvatar & IPersonDetail;
 const PersonCard = (props: IPersonCard) => {
     let content = (
         <div className={styles.PersonCard}>
-            <Avatar imgURL={props.imgURL}/>
+            <Avatar mini={false} imgURL={props.imgURL}/>
             <PersonDetail {...props} />
         </div>
     );
