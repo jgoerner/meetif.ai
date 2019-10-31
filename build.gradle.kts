@@ -45,6 +45,10 @@ dependencies {
     // RML Engines
     implementation("com.taxonic.carml:carml-engine:0.2.3")
     implementation("com.taxonic.carml:carml-logical-source-resolver-jsonpath:0.2.3")
+    
+    // Neo4j
+    implementation("org.springframework.boot:spring-boot-starter-data-neo4j")
+
 }
 
 tasks.withType<KotlinCompile> {

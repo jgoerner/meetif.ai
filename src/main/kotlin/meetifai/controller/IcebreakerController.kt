@@ -21,4 +21,8 @@ class IcebreakerController {
     @PostMapping("/icebreaker/differentCountry")
     fun differentCountry(@RequestParam city1: String, @RequestParam city2: String)
             = iceBreakerService.differentCountry(city1, city2)
+
+    @PostMapping("/icebreaker/connectingPath")
+    fun connectingPath(@RequestParam fromName: String, @RequestParam toName: String)
+            = iceBreakerService.connectingPath(fromName, toName)
 }
