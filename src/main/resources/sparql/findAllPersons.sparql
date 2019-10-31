@@ -1,13 +1,12 @@
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
-SELECT ?id ?name ?location ?imgURL ?participatedEvents
+SELECT ?id ?name ?location ?imgURL
 WHERE {
   ?p
     a foaf:Person ;
     foaf:name ?name ;
 	foaf:based_near ?loc ;
 	foaf:thumbnail ?imgURL.
-  BIND(42 as ?participatedEvents) .
   BIND(strafter(str(?p), "meetif.ai/") as ?id) .
   BIND(strafter(str(?loc), "resource/") as ?location) .
 

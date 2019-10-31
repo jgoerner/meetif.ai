@@ -10,7 +10,9 @@ import meetifai.misc.RMLProperties
 import meetifai.misc.SparqlProperties
 import meetifai.misc.TripleStoreProperties
 import org.eclipse.rdf4j.model.Model
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory
 import org.eclipse.rdf4j.model.impl.TreeModel
+import org.eclipse.rdf4j.model.util.ModelBuilder
 import org.eclipse.rdf4j.repository.http.HTTPRepository
 import org.eclipse.rdf4j.rio.RDFFormat
 import org.slf4j.Logger
@@ -30,9 +32,6 @@ class TripleStoreService {
 
     @Autowired
     lateinit var rmlP: RMLProperties
-
-    @Autowired
-    lateinit var labService: LabService
 
     val logger: Logger =  LoggerFactory.getLogger(TripleStoreService::class.java)
 
@@ -90,10 +89,6 @@ class TripleStoreService {
         }
     }
 
-    fun createNamespace(name: String, prefix: String, ns: String) {
-        // TODO Implement functionality
-    }
-
     fun initialDataLift() {
 
         // (0) crete an empty model to be filled w/ statically and dynamically mapped data
@@ -138,11 +133,40 @@ class TripleStoreService {
         File(rmlP.dynamicDataDir).listFiles()
                 ?.map{ it.nameWithoutExtension }
                 ?.forEach {
-                    val dynamicMapping = dynamicMappingLoader.load(labService.getLabMappingModel(it))
+                    val dynamicMapping = dynamicMappingLoader.load(getLabMappingModel(it))
                     model.addAll(dynamicMapper.map(dynamicMapping))
                 }
         // final persistence
         persistModel(model)
+    }
+
+    fun getLabMappingModel(fileName: String = "lab") : Model {
+        val vf = SimpleValueFactory.getInstance()
+        val logicalSource = vf.createBNode()
+        val subjectMap = vf.createBNode()
+        val predicateObjectMap = vf.createBNode()
+
+        val m = ModelBuilder()
+                .setNamespace("rr", "http://www.w3.org/ns/r2rml#")
+                .setNamespace("rml", "http://semweb.mmlab.be/ns/rml#")
+                .setNamespace("ql", "http://semweb.mmlab.be/ns/ql#")
+                .setNamespace("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
+                .setNamespace("mtfai", "http://meetif.ai/")
+                .subject("mtfai:Dynamic_$fileName")
+                .add("rml:logicalSource", logicalSource)
+                .add("rr:subjectMap", subjectMap)
+                .add("rr:predicateObjectMap", predicateObjectMap)
+                .subject(logicalSource)
+                .add("rml:source", "$fileName.json")
+                .add("rml:referenceFormulation", "ql:JSONPath")
+                .add("rml:iterator", "$.[*]")
+                .subject(subjectMap)
+                .add("rr:template", "http://meetif.ai/{member.id}")
+                .subject(predicateObjectMap)
+                .add("rr:predicate", "mtfai:participatedIn")
+                .add("rr:object", "mtfai:$fileName")
+                .build()
+        return m
     }
 
     fun persistModel(model: Model) {
