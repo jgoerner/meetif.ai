@@ -1,32 +1,7 @@
-const AppTitle = "Meetif.ai";
+const APP_TITLE = "Meetif.ai";
 
-const AppDescription= "Ever wondered...";
 
-const DummyPersons = [
-    {
-        id: 0,
-        name: "Jesus del Valle",
-        location: "Berlin",
-        participatedEvents: 40,
-        imgURL: "https://secure.meetupstatic.com/photos/member/a/a/6/6/member_59503622.jpeg"
-    },
-    {
-        id: 1,
-        name: "Zsuzsanna T. Varga",
-        location: "Berlin",
-        participatedEvents: 25,
-        imgURL: "https://secure.meetupstatic.com/photos/member/b/8/0/d/member_256247117.jpeg"
-    },
-    {
-        id: 2,
-        name: "Elliot Clayton Brown",
-        location: "Potsdam",
-        participatedEvents: 5,
-        imgURL: "https://secure.meetupstatic.com/photos/member/6/9/4/5/member_286526949.jpeg"
-    }
-];
-
-const DummyPerson = {
+const DUMMY_PERSON = {
     id: 0,
     name: "",
     location: "",
@@ -34,20 +9,16 @@ const DummyPerson = {
     imgURL: ""
 };
 
-const DummyDescription = `
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi 
-    ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-     in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-     Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-     deserunt mollit anim id est laborum.`;
-
+const COMMON_EVENTS = "Yeah, you might have met before";
+const NO_COMMON_EVENTS = "There is no event both of you have participated in";
+const DIFFERENT_COUNTRY = "Interesting, you come from different places on earth";
+const NO_DIFFERENT_COUNTRY = "You are coming from the same country";
 
 export {
-    AppTitle,
-    AppDescription,
-    DummyDescription,
-    DummyPerson,
-    DummyPersons
+    APP_TITLE,
+    COMMON_EVENTS,
+    DIFFERENT_COUNTRY,
+    DUMMY_PERSON,
+    NO_COMMON_EVENTS,
+    NO_DIFFERENT_COUNTRY
 }

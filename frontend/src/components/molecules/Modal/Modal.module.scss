@@ -1,0 +1,21 @@
+@import "../../../styling/variables.scss";
+
+.Modal {
+  width: 50%;
+  z-index: 200;
+  background-color: white;
+  position: absolute;
+  border-radius: $border-radius;
+  transition: all 0.3s ease-out;
+  padding: 10px;
+}
+
+.Visible {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.Hidden {
+  transform: scale(0);
+  opacity: 0;
+}
