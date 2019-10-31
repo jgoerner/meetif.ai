@@ -3,7 +3,7 @@ import Styles from "./Main.module.scss";
 import PersonPicker from "../../organisms/PersonPicker/PersonPicker";
 import {
     APP_TITLE,
-    COMMON_EVENTS, CONNECTION,
+    COMMON_EVENTS, CONNECTION, DESCRIPTION,
     DIFFERENT_COUNTRY,
     DUMMY_PERSON,
     NO_COMMON_EVENTS, NO_CONNECTION,
@@ -16,7 +16,6 @@ import Modal from "../../molecules/Modal/Modal";
 import Infobar from "../../atoms/Infobar/Infobar";
 import Intention from "../../misc/Enums";
 import Avatar from "../../atoms/Avatar/Avatar";
-import logo from "../../../styling/logo.png";
 
 const Main = () => {
 
@@ -176,7 +175,7 @@ const Main = () => {
     if (empty) {
         classesPersonPicker.push(Styles.Disabled);
         classesCardContent.push(Styles.EmptyContent);
-        explainingText = <div className={Styles.Explanation}>This is how you use ...</div>
+        explainingText = <div className={Styles.Explanation}>{DESCRIPTION}</div>
     }
 
     let ctx = (
