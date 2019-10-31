@@ -1,9 +1,18 @@
 @import "../../../styling/variables";
 
 .Avatar {
-  width: 200px;
-  height: 200px;
   object-fit: cover;
   border-radius: 50%;
+}
+
+.MiniSized {
+  width: 70px;
+  height: 70px;
   border: 5px solid $text-color-primary;
+}
+
+.NormalSized {
+  border: 5px solid $text-color-primary;
+  width: 200px;
+  height: 200px;
 }

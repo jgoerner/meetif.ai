@@ -92,3 +92,23 @@ button:focus {outline:0;}
 .Explanation {
 
 }
+
+.InfobarContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.InfobarContainer > * {
+  margin: 2px;
+}
+
+.PersonInfoBar {
+  display: flex;
+  justify-content: center;
+}
+
+.EventInfoBar {
+  display: flex;
+  justify-content: center;
+}

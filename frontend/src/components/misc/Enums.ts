@@ -1,6 +1,9 @@
 enum Intention {
     GOOD,
-    BAD
+    BAD,
+    NEUTRAL,
+    PERSON,
+    EVENT
 }
 
 export default Intention;

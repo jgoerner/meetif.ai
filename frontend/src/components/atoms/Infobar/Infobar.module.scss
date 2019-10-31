@@ -17,3 +17,20 @@
 .BadIntention {
   background-color: $background-color-secondary;
 }
+
+.NeutralIntention {
+  background-color: $background-color-primary;
+  color: $text-color-primary;
+}
+
+.PersonIntention {
+  background-color: $background-color-primary;
+  color: $text-color-primary;
+  width: 70%;
+}
+
+.EventIntention {
+  background-color: $background-color-primary;
+  color: $text-color-primary;
+  width: 70%;
+}
