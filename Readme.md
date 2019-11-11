@@ -1,78 +1,85 @@
 # Meetif.ai 
 > Knowledge Graph to break the Ice ❄️
 
-# What it is about
-This repository contains a social knowledge graph for educational purposes. 
+# What is __Meetif.ai__ about?
+This repository contains a social knowledge graph (_meetif.ai_) for educational purposes. 
+It fetches data from the social event platform Meetup.com and creates a graph containing events, groups, members, etc.
+This graph is utilized to generate [INSERT LINK TO UD OR WIKI OF ICEBREAKER]()between people ([INSERT LINK TO ICEBREAKER HERE]()). 
+It is noteworthy that the actual raw data is **not contained** in this repository.
+Please see [INSERT LINK TO MEETUP API HERE]() for more information how to communicate with the Meetup.com API.
 
 ![](./docs/readme_0.png)
 
-### Icebreaker 1 - Common Events
-The first - and easiest situation - would be, if the two persons share common events, both have been participated in.
+# What "Icebreaker" are available?
 
-##### How does it look like?
+## Icebreaker 1 - Common Events 🎫
+> The first icebreaker suggests events that both persons have been participated in.
+
 ![](./docs/readme_1.png)
 
-##### What is happening in the background?
-![](.docs/readme_1_bg.png)
-A SPARQL query is evaluated if both persons are linked to a common event.
+[What is happening in the background?]()
 
-### Icebreaker 2 - Cultural Differences
-If there is no common event, there might be cultural differences that are interesting to talk about.
+## Icebreaker 2 - Cultural Differences 👽
+> If there is no common event, there might be cultural differences that are interesting to talk about.
 
-##### How does it look like?
 ![](./docs/readme_2.png)
 
-##### What is happening in the background?
-![](.docs/readme_2_bg.png)
-The only location in the graph is the city.
-Therefore SPARQL query sent against the `dpbedia.org/sparql` endpoint to fetch and compare the countries of those cities.
+[What is happening in the background?]()
 
-### Icebreaker 3 - friend of a friend of a friend ...
-Yet another option is to check, if you participated in an event with somebody who participated in another event, 
-where also another person participated, who participated in another event, ..., until you reach the other person.
+## Icebreaker 3 - friend of a friend of a friend ... 👫👫👫
+> Yet another option is to check, if you participated in an event with somebody who participated in another event, where also another person participated, who participated in another event, ..., until you reach the other person.
 
-##### How does it look like?
 ![](./docs/readme_3.png)
 
-##### What is happening in the background?
-![](.docs/readme_3_bg.png)
-During initial loading some information from the RDF graph are mirrored into a Neo4j database.
-Opposed to RDF-based solution, Neo4j allows for more advanced graph traversals.
-The builtin `allShortestPath` CYPHER function is used to find the paths between the persons.
-If those paths exist, a random one is chosen and returned.s
+[What is happening in the background?]()
 
-### Icebreaker 4 - Facts!
+## Icebreaker 4 - Facts! 🧠
 If none of the aforementioned icebreakers can be applied, there are only facts left.
-
-##### How does it look like?
-![](./docs/readme_4.png)
-
-##### What is happening in the background?
-![](.docs/readme_4_bg.png)
-The [Numbers API](http://numbersapi.com/) gets fetched randomly to provide mind blowing trivia like
-`1000000000000 is the number of bacteria on the surface of the human body`
+Those include statements like `1000000000000 is the number of bacteria on the surface of the human body`
 or 
 `250 is the number of Pokémon originally available in Pokémon Gold and Silver before Celebi was added`.
 
+![](./docs/readme_4.png)
 
+[What is happening in the background?]()
 
+# Technical Background
 
-# Run the Knowledge Graph
+## How to start Meetif.ai?
+In order to start the Knowledge Graph run the following command:
+`docker-compose -f "docker-compose.yml" up -d --build`
 
-### Prerequisites 
-- Docker
-- JDK
-- Kotlin
-- Node
-- yarn
+This will start the containerized structure of Meetif.ai which is depicted in the following figure.
 
-### How to start
-In order to start the Knowledge Graph run the following commands in the given order from the root directory of this repository:
-1. Start RDF server & Neo4j `docker-compose up -d`
-2. Start the backend `./gradlew bootRun`
-3. Start the frontend `yarn --cwd ./frontend start`
+![](./docs/architecture.png)
 
-# Background Information
+## Icebreker - behind the scenes
+
+### Icebreaker I
+![](.docs/readme_1_bg.png)
+1. an HTTP request is sent to the backend
+2. a SPARQL query is raised against the RDF server 
+3. the result of the SPARQL query is returned to the backend ...
+4. ... and to the frontend
+
+### Icebreaker II
+![](.docs/readme_2_bg.png)
+1. an HTTP request is sent to the backend
+2. a SPARQL query is raised against the RDF server which is federated to [LINK TO DBPEDIA]()
+3. the result of the SPARQL query is returned to the backend ...
+4. ... and to the frontend
+
+### Icebreaker III
+![](.docs/readme_3_bg.png)
+1. an HTTP request is sent to the backend
+2. a CYPHER query (including graph traversals) is raised against Neo4j
+3. the result of the CYPHER query is returned to the backend ...
+4. ... and to the frontend
+
+### Icebreaker IV
+![](.docs/readme_4_bg.png)
+1. an HTTP request is sent to [Numbers API](http://numbersapi.com/)
+3. the result of the CYPHER query is returned to the frontend
 
 ### Knowledge Graphs
 
@@ -110,10 +117,9 @@ In order to start the Knowledge Graph run the following commands in the given or
 | dbr | DBPedia Resources | |
 
 
-
 # How to contribute
 Yes, there are lot of options to further improve this repository.
 As it's main purpose is to show the possible combination of building blocks,
 general best practices of software engineering (e.g. TDD) have been neglected.
 
-You are more than happy to raise issues, refactor and open pull requests 🙂
+You are more than happy to raise issues, refactor, open pull requests and improve this repository 🙂
