@@ -82,6 +82,7 @@ const Main = () => {
                                 axios.post("http://localhost:9090/api/icebreaker/connection", connectionForm)
                                     .then(r => {
                                         if (r["data"].length != 0) {
+                                            console.log(r["data"]);
                                             setModalContent( prevState => {
                                                 const newContent = [...prevState];
                                                 const tmp = [<p>{CONNECTION}</p>];
