@@ -56,28 +56,28 @@ This will start the containerized structure of Meetif.ai which is depicted in th
 ## Icebreker - behind the scenes
 
 ### Icebreaker I
-![](.docs/readme_1_bg.png)
+![](./docs/readme_1_bg.png)
 1. an HTTP request is sent to the backend
 2. a SPARQL query is raised against the RDF server 
 3. the result of the SPARQL query is returned to the backend ...
 4. ... and to the frontend
 
 ### Icebreaker II
-![](.docs/readme_2_bg.png)
+![](./docs/readme_2_bg.png)
 1. an HTTP request is sent to the backend
 2. a SPARQL query is raised against the RDF server which is federated to [DBpedia](https://wiki.dbpedia.org/)
 3. the result of the SPARQL query is returned to the backend ...
 4. ... and to the frontend
 
 ### Icebreaker III
-![](.docs/readme_3_bg.png)
+![](./docs/readme_3_bg.png)
 1. an HTTP request is sent to the backend
 2. a CYPHER query (including graph traversals) is raised against Neo4j
 3. the result of the CYPHER query is returned to the backend ...
 4. ... and to the frontend
 
 ### Icebreaker IV
-![](.docs/readme_4_bg.png)
+![](./docs/readme_4_bg.png)
 1. an HTTP request is sent to [Numbers API](http://numbersapi.com/)
 3. the result of the CYPHER query is returned to the frontend
 
