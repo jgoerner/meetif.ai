@@ -1,0 +1,36 @@
+@import "../../../styling/variables.scss";
+
+.Infobar {
+  padding: 10px;
+  text-align: center;
+  margin: 10px;
+  border-radius: $border-radius;
+  color: white;
+  box-shadow: 0 0 2px 0 rgba(46, 62, 72, .5), 0 2px 4px 0 rgba(46, 62, 72, .5);
+}
+
+.GoodIntention {
+  background-color: $accent-color-primary;
+  font-weight: bold;
+}
+
+.BadIntention {
+  background-color: $background-color-secondary;
+}
+
+.NeutralIntention {
+  background-color: $background-color-primary;
+  color: $text-color-primary;
+}
+
+.PersonIntention {
+  background-color: $background-color-primary;
+  color: $text-color-primary;
+  width: 70%;
+}
+
+.EventIntention {
+  background-color: $background-color-primary;
+  color: $text-color-primary;
+  width: 70%;
+}

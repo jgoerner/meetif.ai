@@ -1,0 +1,62 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>.
+@prefix rml: <http://semweb.mmlab.be/ns/rml#>.
+@prefix ql: <http://semweb.mmlab.be/ns/ql#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix mtfai: <http://meetif.ai/>.
+
+<#PersonMapping>
+  rml:logicalSource [
+    rml:source "members.json";
+    rml:referenceFormulation ql:JSONPath;
+    rml:iterator "$.[*]" ];
+
+  rr:subjectMap [
+     rr:template "http://meetif.ai/{id}";
+     rr:class foaf:Person
+  ];
+
+  rr:predicateObjectMap [
+    rr:predicate foaf:name;
+    rr:objectMap [rml:reference "name"]
+  ];
+
+  rr:predicateObjectMap [
+    rr:predicate foaf:thumbnail;
+    rr:objectMap [ rml:reference "photo.photo_link" ]
+  ];
+
+  rr:predicateObjectMap [
+    rr:predicate foaf:page;
+    rr:objectMap [rml:reference "group_profile.link"]
+  ];
+
+  rr:predicateObjectMap [
+    rr:predicate foaf:based_near;
+    rr:objectMap [ rr:parentTriplesMap <#PersonCityMapping> ]
+  ];
+
+  rr:predicateObjectMap [
+    rr:predicate foaf:member;
+    rr:objectMap [ rr:parentTriplesMap <#PersonGroupMapping> ]
+  ].
+
+<#PersonCityMapping>
+  rml:logicalSource [
+    rml:source "members.json";
+    rml:referenceFormulation ql:JSONPath;
+    rml:iterator "$.[*]" ];
+
+  rr:subjectMap [
+     rr:template "http://dbpedia.org/resource/{city}";
+  ].
+
+<#PersonGroupMapping>
+  rml:logicalSource [
+    rml:source "members.json";
+    rml:referenceFormulation ql:JSONPath;
+    rml:iterator "$.[*]" ];
+
+  rr:subjectMap [
+     rr:template "http://meetif.ai/{group_profile.group.id}";
+  ].

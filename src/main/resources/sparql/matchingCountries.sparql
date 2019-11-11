@@ -1,0 +1,8 @@
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+
+SELECT *
+WHERE {
+  dbr:CITY_1_NAME dbo:country ?country1 .
+  dbr:CITY_2_NAME dbo:country ?country2 .
+}

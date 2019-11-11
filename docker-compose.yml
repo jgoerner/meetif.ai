@@ -1,0 +1,40 @@
+# TODO map directory to docker volume and persist
+
+version: "3"
+services:
+  rdf4j:
+    image: eclipse/rdf4j-workbench:amd64-latest
+    ports:
+      - 8080:8080
+  neo4j:
+    image: neo4j:3.5
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - ./docker/plugins:/var/lib/neo4j/plugins
+    environment:
+      - NEO4J_AUTH=neo4j/admin
+  backend:
+    image: adoptopenjdk/openjdk8:alpine
+    depends_on:
+      - rdf4j
+      - neo4j
+    ports:
+      - 9090:9090
+    volumes:
+      - ./:/home/meetifai
+    command: sh -c "cd /home/meetifai && ./gradlew bootRun"
+  frontend:
+    image: node:8-alpine
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/home/meetifai
+    command: sh -c "cd /home/meetifai && yarn install && yarn start"
+  ide:
+    image: theiaide/theia:latest
+    ports:
+      - 5000:3000
+    volumes:
+      - ./:/home/project

@@ -1,0 +1,18 @@
+@import "../../../styling/variables";
+
+.Button {
+  border: none;
+  color: $foreground-color-primary;
+  background-color: $accent-color-primary;
+  font-size: 25px;
+  text-align: center;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 200px;
+  font-family: Pacifico;
+}
+
+.Disabled {
+  background-color: black;
+}
